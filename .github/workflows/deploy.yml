@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: europ.iq.pl
         username: chalupy_www
-        password: ${{ secrets.FTP_PASSWORD }}
+        password: ${{ secrets.keystoeko_kieszonkowe }}
         local-dir: ./
         server-dir: /www/eko.chalupy.online/
         exclude: |

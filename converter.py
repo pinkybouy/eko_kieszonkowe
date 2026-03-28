@@ -223,7 +223,7 @@ def main():
     slides_html = "".join([generate_slide_html(s) for s in slides_data])
     final_html = HTML_TEMPLATE.format(slides_html=slides_html)
     
-    output_path = Path("c:/Users/marek/Documents/source/xxm/index.html")
+    output_path = Path("c:/Users/marek/Documents/source/xxm/ekoindex.html")
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(final_html)
     print(f"Generated {output_path}")
