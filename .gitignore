@@ -9,3 +9,4 @@ _agent/
 node_modules/
 .vscode/
 .idea/
+.env
