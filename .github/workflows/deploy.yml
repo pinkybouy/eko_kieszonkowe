@@ -16,8 +16,8 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
+        server: europ.iq.pl
+        username: chalupy_www
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./
         server-dir: /www/eko.chalupy.online/
