@@ -13,12 +13,28 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
 
+    - name: 🔐 Parse Credentials
+      id: creds
+      run: |
+        # Parse "login=password" format
+        SECRET="${{ secrets.keystoeko_kieszonkowe }}"
+        if [[ "$SECRET" == *"="* ]]; then
+          echo "FTP_USER=${SECRET%%=*}" >> $GITHUB_OUTPUT
+          PASS="${SECRET#*=}"
+          echo "FTP_PASS=$PASS" >> $GITHUB_OUTPUT
+          echo "::add-mask::$PASS"
+        else
+          echo "FTP_USER=chalupy_www" >> $GITHUB_OUTPUT
+          echo "FTP_PASS=$SECRET" >> $GITHUB_OUTPUT
+          echo "::add-mask::$SECRET"
+        fi
+
     - name: 🔐 Disconnect Sunset Timer (Clear Main site)
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: europ.iq.pl
-        username: chalupy_www
-        password: ${{ secrets.keystoeko_kieszonkowe }}
+        username: ${{ steps.creds.outputs.FTP_USER }}
+        password: ${{ steps.creds.outputs.FTP_PASS }}
         local-dir: ./empty_site/
         server-dir: /www/chalupy.online/
         dangerous-clean-slate: true
@@ -27,8 +43,8 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: europ.iq.pl
-        username: chalupy_www
-        password: ${{ secrets.keystoeko_kieszonkowe }}
+        username: ${{ steps.creds.outputs.FTP_USER }}
+        password: ${{ steps.creds.outputs.FTP_PASS }}
         local-dir: ./
         server-dir: /www/eko.chalupy.online/
         exclude: |
