@@ -20,7 +20,7 @@ jobs:
         username: chalupy_www
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./
-        server-dir: /www/eko.chalupy.online/
+        server-dir: /www/chalupy.online/eko/
         exclude: |
           **/.git*
           **/.git*/**
