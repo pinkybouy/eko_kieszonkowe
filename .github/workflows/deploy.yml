@@ -13,7 +13,17 @@ jobs:
     - name: 🚚 Get latest code
       uses: actions/checkout@v4
 
-    - name: 📂 Sync files
+    - name: 🔐 Disconnect Sunset Timer (Clear Main site)
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: europ.iq.pl
+        username: chalupy_www
+        password: ${{ secrets.keystoeko_kieszonkowe }}
+        local-dir: ./empty_site/
+        server-dir: /www/chalupy.online/
+        dangerous-clean-slate: true
+
+    - name: 📂 Sync Eko files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: europ.iq.pl
@@ -30,3 +40,4 @@ jobs:
           feedpages.md
           slides_draft.md
           task.md
+          empty_site/**
