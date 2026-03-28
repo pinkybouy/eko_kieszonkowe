@@ -16,18 +16,18 @@ jobs:
     - name: 🔐 Parse Credentials
       id: creds
       run: |
-        # Parse "login=password" format
-        SECRET="${{ secrets.keystoeko_kieszonkowe }}"
-        if [[ "$SECRET" == *"="* ]]; then
-          echo "FTP_USER=${SECRET%%=*}" >> $GITHUB_OUTPUT
-          PASS="${SECRET#*=}"
-          echo "FTP_PASS=$PASS" >> $GITHUB_OUTPUT
-          echo "::add-mask::$PASS"
+        # Parse "login=password" format reliably
+        S_CONTENT="${{ secrets.keystoeko_kieszonkowe }}"
+        if [[ "$S_CONTENT" == *"="* ]]; then
+          f_user="${S_CONTENT%%=*}"
+          f_pass="${S_CONTENT#*=}"
         else
-          echo "FTP_USER=chalupy_www" >> $GITHUB_OUTPUT
-          echo "FTP_PASS=$SECRET" >> $GITHUB_OUTPUT
-          echo "::add-mask::$SECRET"
+          f_user="chalupy_www"
+          f_pass="$S_CONTENT"
         fi
+        echo "::add-mask::$f_pass"
+        echo "FTP_USER=$f_user" >> $GITHUB_OUTPUT
+        echo "FTP_PASS=$f_pass" >> $GITHUB_OUTPUT
 
     - name: 🔍 Find Site Paths
       run: |
