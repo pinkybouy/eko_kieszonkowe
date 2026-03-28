@@ -29,6 +29,34 @@ jobs:
           echo "::add-mask::$SECRET"
         fi
 
+    - name: 🔍 Find Site Paths
+      run: |
+        # Use a python script to list everything since we can't reliably use native FTP commands in one-liners
+        cat <<EOF > find_paths.py
+        import ftplib
+        ftp = ftplib.FTP('europ.iq.pl')
+        ftp.login('${{ steps.creds.outputs.FTP_USER }}', '${{ steps.creds.outputs.FTP_PASS }}')
+        def find_index(path):
+            try:
+                ftp.cwd(path)
+                items = []
+                ftp.dir(items.append)
+                for i in items:
+                    name = i.split()[-1]
+                    if name in ('.', '..'): continue
+                    full = f"{path}/{name}".replace("//", "/")
+                    if "index.html" in name:
+                        print(f"!!! FOUND INDEX: {full}")
+                    if i.startswith('d'):
+                        find_index(full)
+                        ftp.cwd(path)
+            except: pass
+        find_index("/")
+        ftp.quit()
+        EOF
+        python3 find_paths.py > ftp_structure.log
+        cat ftp_structure.log
+
     - name: 🔐 Disconnect Sunset Timer (Clear Main site)
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
