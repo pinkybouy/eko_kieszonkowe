@@ -1,0 +1,11 @@
+__pycache__/
+.DS_Store
+*.pyc
+.gemini/
+.agents/
+.agent/
+_agents/
+_agent/
+node_modules/
+.vscode/
+.idea/
